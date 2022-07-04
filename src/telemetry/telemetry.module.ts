@@ -8,12 +8,19 @@ import {
 import { ZipkinExporter } from '@opentelemetry/exporter-zipkin';
 import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import {
+  ActiveHandlesMetric,
+  ActiveHandlesTotalMetric,
   ControllerInjector,
   EventEmitterInjector,
   GuardInjector,
+  HttpRequestDurationSeconds,
   LoggerInjector,
   OpenTelemetryModule,
   PipeInjector,
+  ProcessMaxFdsMetric,
+  ProcessOpenFdsMetric,
+  ProcessStartTimeMetric,
+  ResourceMetric,
   ScheduleInjector,
 } from '@metinseylan/nestjs-opentelemetry';
 
@@ -32,6 +39,15 @@ import {
           ScheduleInjector,
           PipeInjector,
           LoggerInjector,
+        ],
+        metricAutoObservers: [
+          ResourceMetric,
+          ProcessStartTimeMetric,
+          ProcessOpenFdsMetric,
+          ProcessMaxFdsMetric,
+          ActiveHandlesMetric,
+          ActiveHandlesTotalMetric,
+          HttpRequestDurationSeconds,
         ],
         // need to configure to zipkin and prometheus later for user in metrics
         // spanProcessor: new SimpleSpanProcessor(
