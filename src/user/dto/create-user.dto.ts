@@ -7,7 +7,7 @@ import {
   Matches,
   IsArray,
 } from 'class-validator';
-import { Currency } from '../entity/user.entity';
+import { Currency, Locale } from '../entity/user.entity';
 import { Permission, PermissionType } from '../entity/user-permission.entity';
 import { Point } from 'geojson';
 
@@ -65,6 +65,19 @@ export class CreateUserDto {
   })
   @IsString()
   currency: Currency;
+
+  @ApiProperty({
+    name: 'locale',
+    enum: Locale,
+    description: 'The locale of the user: en, ar',
+  })
+  locale: Locale;
+
+  @ApiProperty({
+    name: 'addressText',
+    description: 'address of the user',
+  })
+  addressText?: string;
 
   @ApiProperty({
     name: 'addressCoordinates',
