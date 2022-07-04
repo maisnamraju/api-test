@@ -2,6 +2,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Common Commands 
+- Run `typeorm migration:create migrations/<script-name>` to create a migration script boilerplate
+
+
 ## Installation
 
 ```bash

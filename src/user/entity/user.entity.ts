@@ -6,8 +6,13 @@ import {
   UpdateDateColumn,
   VersionColumn,
   OneToMany,
+  OneToOne,
+  JoinColumn,
+  Unique,
+  Index,
 } from 'typeorm';
-import { UserPermissions } from './user-permissions.entity';
+import { UserPermission } from './user-permission.entity';
+import { Point } from 'geojson';
 
 export enum Currency {
   USD = 'USD',
@@ -33,7 +38,12 @@ export class User {
   lastName: string;
 
   @Column('varchar', { length: 200 })
+  @Unique('phoneNo', ['phoneNo'])
   phoneNo: string;
+
+  @Column('varchar', { length: 200 })
+  @Unique('email', ['email'])
+  email: string;
 
   @Column({
     type: 'enum',
@@ -49,19 +59,25 @@ export class User {
   })
   locale: Locale;
 
-  @Column()
+  @Column('varchar', { length: 200 })
   addressText: string;
 
-  @Column()
-  addressCoordinates: object;
+  @Index({ spatial: true })
+  @Column({
+    type: 'geography',
+    spatialFeatureType: 'Point',
+    srid: 4326,
+    nullable: true,
+  })
+  addressCoordinates?: Point;
 
-  @OneToMany((type) => UserPermissions, (permissions) => permissions.user)
-  permissions: UserPermissions[];
+  @OneToOne(() => UserPermission, (permissions) => permissions.user)
+  permissions: UserPermission[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updatedAt' })
   updatedAt: Date;
 
   @VersionColumn()

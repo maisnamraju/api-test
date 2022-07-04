@@ -5,7 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   VersionColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 export interface Permission {
   key: string;
@@ -13,24 +16,23 @@ export interface Permission {
 }
 
 @Entity()
-export class UserPermissions {
+export class UserPermission {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({
-    type: 'int',
-  })
-  userId: number;
 
   @Column({
     type: 'jsonb',
   })
   permissions: Permission[];
 
-  @CreateDateColumn()
+  @OneToOne(() => User, (user) => user.permissions)
+  @JoinColumn()
+  user: User;
+
+  @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updatedAt' })
   updatedAt: Date;
 
   @VersionColumn()
