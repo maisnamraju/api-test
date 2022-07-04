@@ -9,15 +9,14 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
     env_file:
       - .env
+    ports:
+      - ${PORT}:${PORT}
     networks:
       - zid-dev-net
     depends_on:
       - postgres
-      - redis
     command: npm run start:dev
     environment:
       WAIT_HOSTS: postgres:5432
@@ -38,6 +37,21 @@ services:
       - ${DB_PORT}:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
+  zipkin:
+    image: ghcr.io/openzipkin/zipkin-slim
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+    ports:
+      # Port used for the Zipkin UI and HTTP Api
+      - 9411:9411
+  storage:
+    image: ghcr.io/openzipkin/zipkin-mysql
+    container_name: mysql
 networks:
   zid-dev-net:
     driver: bridge
