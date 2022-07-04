@@ -26,16 +26,16 @@ describe('UserRepository', () => {
       const id = 1;
 
       const expectedOutput: User = {
-        id,
-        name: 'Default User',
-        username: 'default-user',
-        password: 'random-password',
-        roles: [ROLE.USER],
-        isAccountDisabled: false,
-        email: 'default-user@random.com',
-        createdAt: currentDate,
-        updatedAt: currentDate,
-        articles: [],
+        // id,
+        // name: 'Default User',
+        // username: 'default-user',
+        // password: 'random-password',
+        // roles: [ROLE.USER],
+        // isAccountDisabled: false,
+        // email: 'default-user@random.com',
+        // createdAt: currentDate,
+        // updatedAt: currentDate,
+        // articles: [],
       };
 
       jest.spyOn(repository, 'findOne').mockResolvedValue(expectedOutput);
@@ -44,18 +44,7 @@ describe('UserRepository', () => {
     });
 
     it('should return user if found', async () => {
-      const expectedOutput: User = {
-        id: 1,
-        name: 'Default User',
-        username: 'default-user',
-        password: 'random-password',
-        roles: [ROLE.USER],
-        isAccountDisabled: false,
-        email: 'default-user@random.com',
-        createdAt: currentDate,
-        updatedAt: currentDate,
-        articles: [],
-      };
+      const expectedOutput: User = {};
 
       jest.spyOn(repository, 'findOne').mockResolvedValue(expectedOutput);
 

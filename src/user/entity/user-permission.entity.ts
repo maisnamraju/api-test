@@ -10,9 +10,15 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 
+export enum PermissionType {
+  READ = 'Read',
+  WRITE = 'Write',
+  DELETE = 'Delete',
+}
+
 export interface Permission {
   key: string;
-  value: 'Read' | 'Write' | 'Delete';
+  value: PermissionType;
 }
 
 @Entity()
