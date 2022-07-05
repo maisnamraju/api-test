@@ -10,8 +10,10 @@ export const config = () => ({
   synchronize: process.env.NODE_ENV === 'development' ? true : false,
   debug: process.env.NODE_ENV === 'development', // useful for debugging queries during development
   entities: ['dist/**/*.entity.js'],
+  seeders: ['dist/seeds/**/*.js'],
   autoLoadEntities: true,
-  migrations: ['dist/database/migrations/*{.ts,.js}'],
+  //   defaultSeeder: RootSeeder,
+  migrations: ['dist/database/migrations/*.js'],
   cli: {
     migrationsDir: 'src/database/migrations',
   },

@@ -2,28 +2,19 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Common Commands 
-- Run `typeorm migration:create migrations/<script-name>` to create a migration script boilerplate
+## Migration Commands 
+- `npm run migration:generate <filepath>` to create a migration script
+- `npm run migration:run` to run migrations scripts 
+- `npm run migration:rollback` to rollover migration
 
-
-## Installation
+## Installation and running
 
 ```bash
 $ npm install
 ```
+Copy content of `.env.example` to `.env` and run `docker-compose up` to start application in dev mode
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
+Run `docker exec -it main /bin/bash` to ssh into the dev container and npm run commands on the fly  
 
 ## Test
 
