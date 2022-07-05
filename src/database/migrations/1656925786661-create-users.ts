@@ -83,7 +83,7 @@ export class createUsers1656925786661 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: 'user-permission',
+        name: 'user_permission',
         columns: [
           {
             name: 'id',
@@ -92,7 +92,7 @@ export class createUsers1656925786661 implements MigrationInterface {
           },
           {
             name: 'permissions',
-            type: 'st_point',
+            type: 'jsonb',
           },
           {
             name: 'createdAt',
@@ -115,7 +115,7 @@ export class createUsers1656925786661 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user');
-    await queryRunner.dropTable('user-permission');
+    await queryRunner.query('DROP TABLE "user" CASCADE');
+    await queryRunner.query('DROP TABLE "user_permission" CASCADE');
   }
 }

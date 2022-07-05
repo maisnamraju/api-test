@@ -31,7 +31,7 @@ export class UserPermission {
   })
   permissions: Permission[];
 
-  @OneToOne(() => User, (user) => user.permissions)
+  @OneToOne(() => User, (user) => user.permissions, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 

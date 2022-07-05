@@ -13,7 +13,7 @@ export const config = () => ({
   autoLoadEntities: true,
   migrations: ['dist/database/migrations/*{.ts,.js}'],
   cli: {
-    migrationsDir: 'dist/database/migrations',
+    migrationsDir: 'src/database/migrations',
   },
 });
 

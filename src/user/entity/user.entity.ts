@@ -71,7 +71,9 @@ export class User {
   })
   addressCoordinates?: Point;
 
-  @OneToOne(() => UserPermission, (permissions) => permissions.user)
+  @OneToOne(() => UserPermission, (permissions) => permissions.user, {
+    onDelete: 'CASCADE',
+  })
   permissions: UserPermission[];
 
   @CreateDateColumn({ name: 'createdAt' })
