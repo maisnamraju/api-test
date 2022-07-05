@@ -17,7 +17,7 @@ services:
       - zid-dev-net
     depends_on:
       - postgres
-    command: npm run start:dev
+    command: npm run start:debug
     environment:
       WAIT_HOSTS: postgres:5432
 
@@ -52,6 +52,22 @@ services:
   storage:
     image: ghcr.io/openzipkin/zipkin-mysql
     container_name: mysql
+  adminer:
+    image: adminer
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      POSTGRES_HOST: ${DB_HOST}
+      ADMINER_DESIGN: nette
+      ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - 8080:9000
 networks:
   zid-dev-net:
     driver: bridge

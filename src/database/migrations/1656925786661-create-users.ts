@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 export class createUsers1656925786661 implements MigrationInterface {
+  name = 'createUsers1656925786661';
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

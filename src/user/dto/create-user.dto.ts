@@ -6,10 +6,16 @@ import {
   IsOptional,
   Matches,
   IsArray,
+  ValidateNested,
 } from 'class-validator';
 import { Currency, Locale } from '../entity/user.entity';
-import { Permission, PermissionType } from '../entity/user-permission.entity';
+import {
+  Permission as PermissionEntity,
+  PermissionType,
+} from '../entity/user-permission.entity';
 import { Point } from 'geojson';
+import { Type } from 'class-transformer';
+import { Permission } from './permission.dto';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -51,9 +57,13 @@ export class CreateUserDto {
     description: `Phone number, a mix of country code and phone number`,
   })
   @IsString()
-  @Matches(/^\+?[0-9]{1,3}?[0-9]{7,12}$/, {
-    message: 'Phone number should be in the following format +629177511964',
-  })
+  // source: https://stackoverflow.com/questions/2113908/what-regular-expression-will-match-valid-international-phone-numbers
+  @Matches(
+    /\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/,
+    {
+      message: 'Phone number should be in the following format +629177511964',
+    },
+  )
   phoneNo: string;
 
   @ApiProperty({
@@ -83,14 +93,8 @@ export class CreateUserDto {
     name: 'addressCoordinates',
     required: false,
     example: {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [125.6, 10.1],
-      },
-      properties: {
-        name: 'Dinagat Islands',
-      },
+      type: 'Point',
+      coordinates: [125.6, 10.1],
     },
     description: 'geoJSON object pointing to the user`s location',
   })
@@ -117,6 +121,8 @@ export class CreateUserDto {
     required: false,
   })
   @IsOptional()
-  @IsArray()
-  permissions?: Permission[];
+  @IsArray({})
+  @ValidateNested({ each: true })
+  @Type(() => Permission)
+  permissions?: PermissionEntity[];
 }
