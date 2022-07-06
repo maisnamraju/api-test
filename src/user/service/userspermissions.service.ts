@@ -1,5 +1,6 @@
 import { Injectable, LoggerService, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserPermission } from '../entity/user-permission.entity';
@@ -28,7 +29,7 @@ export class UsersPermissionsService {
     permissions,
   }: CreateUserDto): Promise<User> {
     try {
-      const user = await this.userRepo.create({
+      const userData = {
         firstName,
         lastName,
         phoneNo,
@@ -37,12 +38,20 @@ export class UsersPermissionsService {
         addressText,
         currency,
         locale,
-      });
-      await this.userRepo.save(user);
-      if (permissions.length > 0) {
-        // user.permissions = Permissions.create(permissions);
+      };
+      const user = new User();
+      for (const key in userData) {
+        user[key] = userData[key];
       }
-      return user;
+      await this.userRepo.save(user);
+
+      if (permissions.length > 0) {
+        const permission = new UserPermission();
+        permission.user = user;
+        permission.permissions = permissions;
+        await this.userPermissionsRepo.save(permission);
+        return { ...user, permissions: permission };
+      } else return user;
     } catch (error) {
       throw error;
     }
@@ -58,18 +67,41 @@ export class UsersPermissionsService {
 
   async findOne(id: number, include: string[]): Promise<User> {
     try {
-      const user = await this.userRepo.findOne({
+      let query: FindOneOptions<User> = {
         where: { id },
-        relations: include,
-      });
-      if (!user) throw new NotFoundException('User not found');
+      };
+      if (include.length > 0) {
+        query = {
+          ...query,
+          relations: include,
+          loadRelationIds: true,
+        };
+      }
+      const user = await this.userRepo.findOne(query);
+      if (!user) throw NotFoundException;
       return user;
     } catch (error) {
       throw error;
     }
   }
 
-  update(id: number, data: UpdateUserDto) {}
+  async update(id: number, fieldsToUpdate: UpdateUserDto) {
+    try {
+      const user = await this.findOne(
+        id,
+        fieldsToUpdate.hasOwnProperty('permissions') ? ['permissions'] : null,
+      );
 
-  remove(id: number) {}
+      for (const key in fieldsToUpdate) {
+        user[key] = fieldsToUpdate[key];
+      }
+      this.userRepo.save(user);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  remove(id: number) {
+    return this.userRepo.delete(id);
+  }
 }

@@ -10,6 +10,7 @@ import {
   BadRequestException,
   Query,
   NotFoundException,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersPermissionsService } from './service/userspermissions.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,6 +24,7 @@ import {
   ApiResponseProperty,
 } from '@nestjs/swagger';
 import { User } from './entity/user.entity';
+import { QueryFailedError } from 'typeorm';
 
 @Controller('users')
 export class UserController {
@@ -38,7 +40,16 @@ export class UserController {
       const user = await this.usersService.create(createUserDto);
       return user;
     } catch (error) {
-      new BadRequestException(error);
+      console.log(error.message);
+      // TODO - write a error filter to resolve this
+      switch (error.name) {
+        case QueryFailedError.name:
+          throw new BadRequestException([error.message]);
+          break;
+        default:
+          new BadRequestException(error);
+          break;
+      }
     }
   }
 
@@ -60,14 +71,14 @@ export class UserController {
     description: 'user with or without permissions',
   })
   @ApiQuery({ name: 'include', type: String, isArray: true, required: false })
-  async findOne(@Param('id') id: string, @Query() include?: string[]) {
+  async findOne(@Param('id') id: string, @Query('include') include?: string[]) {
     try {
-      const user = await this.usersService.findOne(+id, include);
-      return user;
+      return await this.usersService.findOne(+id, include);
     } catch (error) {
-      //TODO - move this to a custom error handler
-      if (error instanceof NotFoundException) {
-        throw error;
+      //TODO - inject the logger service
+      //TODO - move this to a custom error handler using filters
+      if (error.name === NotFoundException.name) {
+        throw new NotFoundException('user not found');
       } else {
         throw new InternalServerErrorException(error);
       }

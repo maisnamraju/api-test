@@ -56,7 +56,7 @@ const UserPermissionsServiceMock = jest.fn().mockImplementation(() => {
     findOne: jest.fn().mockImplementation(
       (id: number, includeFields?: string[]) =>
         new Promise((resolve, reject) => {
-          if (id === 0) resolve(null);
+          if (id === 0) reject(NotFoundException);
           const permission = users[0].permissions;
           delete users[0].permissions;
           const returnObj = {
@@ -72,11 +72,16 @@ const UserPermissionsServiceMock = jest.fn().mockImplementation(() => {
           resolve(returnObj);
         }),
     ),
-    create: jest
-      .fn()
-      .mockImplementation(({}: CreateUserDto) =>
-        Promise.resolve(userBuilder({ overrides: { firstName: 'Facundo' } })),
-      ),
+    create: jest.fn().mockImplementation(
+      (userData: CreateUserDto) =>
+        new Promise((resolve, reject) => {
+          const user = userBuilder({ overrides: { firstName: 'Facundo' } });
+          if (userData.permissions) {
+            delete user.permissions;
+          }
+          resolve(user);
+        }),
+    ),
     update: jest.fn().mockImplementation(
       (id: number, updates: UpdateUserDto) =>
         new Promise((resolve, reject) => {
@@ -132,7 +137,11 @@ describe('User Controller', () => {
     createdAt: expect.any(Date),
     updatedAt: expect.any(Date),
   };
-
+  const user = userBuilder();
+  const createUserData = {
+    ...user,
+    permissions: user.permissions.permissions,
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -176,73 +185,46 @@ describe('User Controller', () => {
     expect(userCheck).toEqual(userCheck);
   });
 
-  it('fail to get one user when id not in db', async (done) => {
+  it('fail to get one user when id not in db', async () => {
     try {
       await controller.findOne(`0`);
     } catch (error) {
       expect(error).toBeInstanceOf(NotFoundException);
-      done();
     }
   });
 
-  it('should create a user', async () => {
-    const user = userBuilder();
-    const createUserData = {
-      ...user,
-      permissions: user.permissions[0].permissions,
-    };
-    it('should create one user with permissions', async () => {
-      await expect(controller.create(createUserData)).resolves.toReturnWith({
-        id: user.id,
-      });
-    });
-
-    it('should create one user without permissions', async () => {
-      delete createUserData.permissions;
-      await expect(controller.create(createUserData)).resolves.toMatchObject({
-        id: expect.any(Number),
-        title: 'Make a sandwich',
-        done: false,
-      });
+  it('should create an user with permissions', async () => {
+    const userResponse = await controller.create(
+      Object.assign({}, createUserData),
+    );
+    expect(userResponse).toEqual({
+      id: expect.any(Number),
+      addressText: expect.any(String),
+      addressCoordinates: expect.any(Object),
+      currency: expect.any(String),
+      email: expect.any(String),
+      firstName: expect.any(String),
+      lastName: expect.any(String),
+      locale: expect.any(String),
+      phoneNo: expect.any(String),
+      version: expect.any(Number),
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
     });
   });
 
-  //   it('should update one user', async () => {
-  //     // await expect(
-  //     //   controller.update(`1`, { firstName: 'John', lastName: 'Doe' }),
-  //     // ).resolves.toMatchObject({
-  //     //   id: 1,
-  //     //   firstName: 'John',
-  //     //   lastName: 'Doe',
-  //     // });
-  //   });
+  it('should create one user without permissions', async () => {
+    const createUserDataWithoutPermissions = Object.assign({}, createUserData);
+    const userResponse = await controller.create(
+      createUserDataWithoutPermissions,
+    );
+    expect(userResponse).not.toHaveProperty('permissions');
+  });
 
-  //   it('fail to update one user', async () => {
-  //     // await expect(
-  //     //   controller.update(`0`, { firstName: 'John', lastName: 'Doe' }),
-  //     // ).rejects.toThrow();
-  //   });
-
-  //   //   it('should mark one task as done', async () => {
-  //   //     await expect(controller.markDone(1)).resolves.toMatchObject({
-  //   //       id: 1,
-  //   //       title: expect.any(String),
-  //   //       done: true,
-  //   //     });
-  //   //   });
-
-  //   //   it('should mark one task as pending', async () => {
-  //   //     await expect(controller.markPending(1)).resolves.toMatchObject({
-  //   //       id: 1,
-  //   //       title: expect.any(String),
-  //   //       done: false,
-  //   //     });
-  //   //   });
-
-  //   it('should remove one task', async () => {
-  //     await expect(controller.remove(`1`)).resolves.toMatchObject({
-  //       raw: [],
-  //       affected: 1,
-  //     });
-  //   });
+  it('should remove one user', async () => {
+    await expect(controller.remove(`1`)).resolves.toMatchObject({
+      raw: [],
+      affected: 1,
+    });
+  });
 });
