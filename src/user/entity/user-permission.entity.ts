@@ -33,13 +33,13 @@ export class UserPermission {
 
   @OneToOne(() => User, (user) => user.permissions, { onDelete: 'CASCADE' })
   @JoinColumn()
-  user: User;
+  user?: User;
 
   @CreateDateColumn({ name: 'createdAt' })
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn({ name: 'updatedAt' })
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @VersionColumn()
   version: number;

@@ -87,7 +87,8 @@ export class CreateUserDto {
     name: 'addressText',
     description: 'address of the user',
   })
-  addressText?: string;
+  @IsString()
+  addressText: string;
 
   @ApiProperty({
     name: 'addressCoordinates',
@@ -124,5 +125,5 @@ export class CreateUserDto {
   @IsArray({})
   @ValidateNested({ each: true })
   @Type(() => Permission)
-  permissions?: PermissionEntity[];
+  permissions?: Permission[];
 }

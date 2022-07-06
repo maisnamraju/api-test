@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { UserPermission } from './user-permission.entity';
 import { Point } from 'geojson';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum Currency {
   USD = 'USD',
@@ -28,23 +29,29 @@ export enum Locale {
 
 @Entity()
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column('varchar', { length: 200 })
   firstName: string;
 
+  @ApiProperty()
   @Column('varchar', { length: 200 })
   lastName: string;
 
+  @ApiProperty()
   @Column('varchar', { length: 200 })
   @Unique('phoneNo', ['phoneNo'])
   phoneNo: string;
 
+  @ApiProperty()
   @Column('varchar', { length: 200 })
   @Unique('email', ['email'])
   email: string;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: Currency,
@@ -52,6 +59,7 @@ export class User {
   })
   currency: Currency;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: Locale,
@@ -59,9 +67,11 @@ export class User {
   })
   locale: Locale;
 
+  @ApiProperty()
   @Column('varchar', { length: 200 })
   addressText: string;
 
+  @ApiProperty()
   @Index({ spatial: true })
   @Column({
     type: 'geography',
@@ -71,17 +81,22 @@ export class User {
   })
   addressCoordinates?: Point;
 
+  @ApiProperty({
+    type: () => UserPermission,
+  })
   @OneToOne(() => UserPermission, (permissions) => permissions.user, {
     onDelete: 'CASCADE',
   })
-  permissions: UserPermission[];
+  permissions?: UserPermission;
 
+  @ApiProperty()
   @CreateDateColumn({ name: 'createdAt' })
-  createdAt: Date;
+  createdAt?: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({ name: 'updatedAt' })
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @VersionColumn()
-  version: number;
+  version?: number;
 }

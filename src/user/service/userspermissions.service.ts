@@ -1,4 +1,4 @@
-import { Injectable, LoggerService } from '@nestjs/common';
+import { Injectable, LoggerService, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -10,6 +10,7 @@ import { UserRepository } from '../repository/user.repository';
 @Injectable()
 export class UsersPermissionsService {
   constructor(
+    // private readonly logger: LoggerService,
     @InjectRepository(User) private readonly userRepo: UserRepository,
     @InjectRepository(UserPermission)
     private readonly userPermissionsRepo: UserPermissionRepository,
@@ -47,7 +48,7 @@ export class UsersPermissionsService {
     }
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(include?: string[]): Promise<User[]> {
     try {
       return this.userRepo.find();
     } catch (error) {
@@ -55,9 +56,18 @@ export class UsersPermissionsService {
     }
   }
 
-  findOne(id: number) {}
-
-  findUserPermissions(id: number) {}
+  async findOne(id: number, include: string[]): Promise<User> {
+    try {
+      const user = await this.userRepo.findOne({
+        where: { id },
+        relations: include,
+      });
+      if (!user) throw new NotFoundException('User not found');
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   update(id: number, data: UpdateUserDto) {}
 
