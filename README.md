@@ -2,6 +2,11 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Setup 
+- copy `.env.example` to `.env`
+- run `docker-compose up `
+app will now run on the port in the env file 
+
 ## Migration Commands 
 - `npm run migration:generate <filepath>` to create a migration script
 - `npm run migration:run` to run migrations scripts 
@@ -22,9 +27,4 @@ Run `docker exec -it main /bin/bash` to ssh into the dev container and npm run c
 # unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```

@@ -1,0 +1,427 @@
+{
+	"info": {
+		"_postman_id": "f58e9e85-1dde-448a-b1c7-3333830808a1",
+		"name": "NestJS API for POC",
+		"description": "API for POC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14407446"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "User Controller find One",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id?include=reprehenderit aute incididunt Lorem eiusmod&include=sit voluptate proident",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"query": [
+										{
+											"key": "include",
+											"value": "reprehenderit aute incididunt Lorem eiusmod"
+										},
+										{
+											"key": "include",
+											"value": "sit voluptate proident"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "commodo sint",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "user with or without permissions",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id?include=in enim&include=aliqua nisi",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"query": [
+												{
+													"key": "include",
+													"value": "in enim"
+												},
+												{
+													"key": "include",
+													"value": "aliqua nisi"
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "commodo sint",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": -22198863.445240974,\n  \"firstName\": \"non Excepteur in\",\n  \"lastName\": \"deserunt officia aliquip\",\n  \"phoneNo\": \"in in dolor ex\",\n  \"email\": \"nostrud quis ad\",\n  \"currency\": \"cillum aliquip eiusmod eu\",\n  \"locale\": \"dolore id Lorem consectet\",\n  \"addressText\": \"adipisicing irure\",\n  \"addressCoordinates\": {},\n  \"permissions\": {},\n  \"createdAt\": \"1961-02-22T12:10:16.260Z\",\n  \"updatedAt\": \"1948-11-18T18:07:27.943Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "User Controller update",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Facundo\",\n  \"lastName\": \"Rua\",\n  \"email\": \"customer@zid.sa\",\n  \"phoneNo\": \"+629177511964\",\n  \"currency\": \"EUR\",\n  \"locale\": \"en\",\n  \"addressText\": \"p\",\n  \"addressCoordinates\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n      125.6,\n      10.1\n    ]\n  },\n  \"permissions\": [\n    \"id\",\n    \"dolore minim cupidatat irure\"\n  ],\n  \"id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "commodo sint",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Example",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"firstName\": \"Facundo\",\n  \"lastName\": \"Rua\",\n  \"email\": \"customer@zid.sa\",\n  \"phoneNo\": \"+629177511964\",\n  \"currency\": \"EUR\",\n  \"locale\": \"en\",\n  \"addressText\": \"reprehenderit\",\n  \"addressCoordinates\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n      125.6,\n      10.1\n    ]\n  },\n  \"permissions\": [\n    \"sunt nisi\",\n    \"nisi non\"\n  ],\n  \"id\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "commodo sint",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "User Controller remove",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "commodo sint",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Example",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/users/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "commodo sint",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "User Controller create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Facundo\",\n  \"lastName\": \"Rua\",\n  \"email\": \"customer@zid.sa\",\n  \"phoneNo\": \"+629177511964\",\n  \"currency\": \"SAR\",\n  \"locale\": \"en\",\n  \"addressText\": \"ullamco sit\",\n  \"addressCoordinates\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n      125.6,\n      10.1\n    ]\n  },\n  \"permissions\": [\n    \"est tempor sint officia\",\n    \"dolor voluptate\"\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "The user has been successfully created.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Facundo\",\n  \"lastName\": \"Rua\",\n  \"email\": \"customer@zid.sa\",\n  \"phoneNo\": \"+629177511964\",\n  \"currency\": \"GBP\",\n  \"locale\": \"ar\",\n  \"addressText\": \"ut reprehenderit\",\n  \"addressCoordinates\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n      125.6,\n      10.1\n    ]\n  },\n  \"permissions\": [\n    \"minim\",\n    \"aliqua nostrud dolore id aute\"\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": -22198863.445240974,\n  \"firstName\": \"non Excepteur in\",\n  \"lastName\": \"deserunt officia aliquip\",\n  \"phoneNo\": \"in in dolor ex\",\n  \"email\": \"nostrud quis ad\",\n  \"currency\": \"cillum aliquip eiusmod eu\",\n  \"locale\": \"dolore id Lorem consectet\",\n  \"addressText\": \"adipisicing irure\",\n  \"addressCoordinates\": {},\n  \"permissions\": {},\n  \"createdAt\": \"1961-02-22T12:10:16.260Z\",\n  \"updatedAt\": \"1948-11-18T18:07:27.943Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "User Controller find All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "List users"
+					},
+					"response": [
+						{
+							"name": "list of all users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": -38072074.158066064,\n    \"firstName\": \"laboris in sit proident\",\n    \"lastName\": \"aute adipisicing\",\n    \"phoneNo\": \"Duis eiusmod in do dolor\",\n    \"email\": \"ut exercitation occaecat\",\n    \"currency\": \"consequat nulla voluptate\",\n    \"locale\": \"cillu\",\n    \"addressText\": \"ex do enim nisi\",\n    \"addressCoordinates\": {},\n    \"permissions\": {},\n    \"createdAt\": \"1969-01-29T14:52:45.911Z\",\n    \"updatedAt\": \"1977-02-25T06:09:58.311Z\"\n  },\n  {\n    \"id\": 57108192.89821038,\n    \"firstName\": \"consectetur mollit\",\n    \"lastName\": \"aliqua mollit et\",\n    \"phoneNo\": \"ut Lorem laborum incididunt\",\n    \"email\": \"aliqua \",\n    \"currency\": \"sunt eu laborum Lorem\",\n    \"locale\": \"velit mollit\",\n    \"addressText\": \"reprehenderit aliqua nulla adipisicing ex\",\n    \"addressCoordinates\": {},\n    \"permissions\": {},\n    \"createdAt\": \"1997-11-30T18:09:19.527Z\",\n    \"updatedAt\": \"1956-06-03T01:47:36.163Z\"\n  }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "App Controller get Hello",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Untitled Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/",
+			"type": "string"
+		}
+	]
+}
